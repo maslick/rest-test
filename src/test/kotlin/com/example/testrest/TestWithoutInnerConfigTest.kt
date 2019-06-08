@@ -9,14 +9,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDO
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.http.HttpMethod.GET
+import org.springframework.http.HttpStatus.NOT_FOUND
 import org.springframework.http.HttpStatus.OK
 import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-class TestrestApplicationTests {
+class TestWithoutInnerConfigTest {
     @LocalServerPort var port: Int? = null
     @Autowired private lateinit var restTemplate: TestRestTemplate
 
@@ -31,12 +30,6 @@ class TestrestApplicationTests {
     fun testingTestEndpoint() {
         val url = "http://localhost:$port/test"
         val resp = restTemplate.exchange(url, GET, null, String::class.java)
-        assertEquals(resp.statusCode, OK)
+        assertEquals(resp.statusCode, NOT_FOUND)
     }
-}
-
-@RestController
-class TestRest {
-    @GetMapping("/test")
-    fun get() = "test"
 }
